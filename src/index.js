@@ -7,7 +7,7 @@ import { FrameUpdater } from './utils/FrameUpater'
 import { Emitter } from './utils/Emitter'
 import { createStudio } from './entities/createStudio'
 
-import { Shader } from './Shaders/Shader'
+import { Shader } from './Shaders/Ball'
 
 const initApp = () => {
   const emitter = Emitter()
@@ -20,11 +20,25 @@ const initApp = () => {
   const effect = new ShaderPass(Shader)
   composer.addPass( effect )
 
-  new FrameUpdater(emitter)
-  emitter.subscribe('frameUpdate')(() => { 
+  //new FrameUpdater(emitter)
+  let count = 0
+  /*emitter.subscribe('frameUpdate')(() => { 
     composer.render()
     effect.uniforms.iTime.value += 0.02
-  })
+    count ++
+  })*/
+
+  const animate = () => {
+    requestAnimationFrame(animate)
+    composer.render()
+    effect.uniforms.iTime.value += 0.02
+    count ++
+  }
+  animate()
+  setInterval(() => {
+    console.log(count)
+    count = 0
+  }, 1000)
 }
 
 
