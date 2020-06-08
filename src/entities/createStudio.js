@@ -14,25 +14,29 @@ export function createStudio (emitterLink) {
     rendererCon.canvas = canvas
 
     renderer = new THREE.WebGLRenderer(rendererCon)
-    renderer.setClearColor(clearColor)
+    //renderer.setClearColor(clearColor)
+    renderer.autoClear = false
+    renderer.setClearAlpha(.5) 
     renderer.setPixelRatio(window.devicePixelRatio)
     renderer.setSize(window.innerWidth, window.innerHeight)
 
-    //scene = new THREE.Scene()
+    scene = new THREE.Scene()
     //scene.background = backgroundColor
 
-    //{
-    //    const { color, strength } = fogData
-    //    scene.fog = new THREE.FogExp2(color, strength)
-    //}
+    {
+        //const { color, strength } = fogData
+        //scene.fog = new THREE.FogExp2(color, strength)
+    }
 
-    //{
-    //    const { color, strength } = amb
-    //    let lightA = new THREE.AmbientLight( color, strength )
-    //    scene.add( lightA )
-    //}
+    {
+        const { color, strength } = amb
+        let lightA = new THREE.AmbientLight( color, strength )
+        scene.add( lightA )
+    }
 
-    //camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 1, 1000)
+    camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 1, 1000)
+    camera.position.set(0, 0, -100)
+    camera.lookAt(scene.position)
 
 
     window.addEventListener('resize', resize)
@@ -42,32 +46,30 @@ export function createStudio (emitterLink) {
   const resize = () => {
     const size = { width: window.innerWidth, height: window.innerHeight }
     renderer.setSize(size.width, size.height)
-    //if (camera) {
-    //    camera.aspect = size.width/size.height
-    //    camera.updateProjectionMatrix()
-    //}
+    if (camera) {
+        camera.aspect = size.width/size.height
+        camera.updateProjectionMatrix()
+    }
   }
 
-  //const addToScene = mesh => scene.add( mesh )
-  //const drawFrame = () => camera && renderer.render( scene, camera )
+  const addToScene = mesh => scene.add( mesh )
+  const drawFrame = () => camera && renderer.render( scene, camera )
 
   init()
 
-  //const box = new THREE.Mesh(
-  //  new THREE.BoxGeometry(3, 3, 3),
-  //  new THREE.MeshBasicMaterial({ color: 0xff0000 })
-  //)
-
-
-  //box.position.set(0, 0, -30)
-  //studio.addToScene(box)
+  const box = new THREE.Mesh(
+    new THREE.BoxGeometry(3, 3, 3),
+    new THREE.MeshBasicMaterial({ color: 0xff0000 })
+  )
+  box.position.set(0, 0, 0)
+  addToScene(box)
 
 
   return {
     renderer,
-    //scene,
-    //camera,
-    //addToScene,
+    scene,
+    camera,
+    addToScene,
   }
 }
 

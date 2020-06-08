@@ -4,7 +4,7 @@ const hPI = PI / 2
 export const studioConfig = {
   canId: 'webgl-canvas',
   rendererCon: { 
-    antialias: true
+    antialias: false
   },
   clearColor: 0x0e2535,
   backgroundCoor: 0x222024,
